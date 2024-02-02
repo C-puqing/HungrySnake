@@ -54,13 +54,34 @@ export class ScoreBoard {
     return scoreColumn;
   }
 
+  restart() {
+    this.updateScore(10)
+    this.updateLevel(1)
+  }
 
-  updateScore() {
+  updateScore(value: number) {
+    this.score = value;
+    if (this.score >= this.targetScore) {
+      this.upgrade();
+      return;
+    }
+    const valueSpan = this.curScoreElem.querySelector('span:last-child')!;
+    valueSpan.innerHTML = this.score.toString();
+  }
 
+  updateLevel(value: number) {
+    this.level = value;
+    if (this.level >= this.maxLevel) {
+      alert('完结🎉');
+      return;
+    }
+    const valueSpan = this.levelElem.querySelector('span:last-child')!;
+    valueSpan.innerHTML = this.level.toString();
   }
 
   // 升级
   upgrade() {
-
+    this.updateScore(0);
+    this.updateLevel(this.level++);
   }
 }

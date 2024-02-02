@@ -23,8 +23,10 @@ export class App {
     this.gameBoard.init(container);
     this.controlPanel.init(container);
 
-    // 将控制面板的按钮事件绑定到游戏板的控制方法
-    this.controlPanel.onMove((direction) => this.gameBoard.moveSnake(direction));
+    // 控制面板添加重启事件监听
+    this.controlPanel.controlPanelElement.addEventListener('restart', () => {
+      this.scoreBoard.restart();
+    })
 
     // 可以在这里添加更多的游戏启动逻辑，例如开始游戏循环、设置定时器等
   }
