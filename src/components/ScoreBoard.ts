@@ -3,44 +3,64 @@ export class ScoreBoard {
   boardElem: HTMLElement; // 面板DOM元素
 
   score = 0; // 当前分数值
-  scoreElem: HTMLElement; // 展示分数的DOM元素
-  maxScore: number; // 当前等级最高分数，达到后触发升级事件
+  curScoreElem: HTMLElement; // 当前分数DOM
+
+  targetScore: number; // 当前等级最高分数，达到后触发升级事件
+  targetScoreElem: HTMLElement; // 目标分数DOM
 
   level = 1; // 当前等级
   levelElem: HTMLElement; // 展示等级的DOM元素
   maxLevel: number; // 最高等级
 
-  constructor(maxLevel: number = 10, maxScore: number = 10) {
+  constructor(maxLevel: number = 10, targetScore: number = 10) {
+    // 构造外部面板
     this.boardElem = document.createElement('div');
     this.boardElem.classList.add('score-board')
-    this.scoreElem = document.getElementById('score')!;
-    this.maxScore = maxScore;
-    this.levelElem = document.getElementById('level')!;
+    // 构造当前分数DOM
+    this.curScoreElem = this.createScoreColumn('当前分数', this.score.toString());
+    // 构造目标分数DOM
+    this.targetScore = targetScore;
+    this.targetScoreElem = this.createScoreColumn('目标分数', this.targetScore.toString());
+    // 构造当前关卡DOM
+    this.levelElem = this.createScoreColumn('当前关卡', this.level.toString());
     this.maxLevel = maxLevel;
   }
 
   public init(container: HTMLElement): void {
+    this.boardElem.append(this.curScoreElem, this.targetScoreElem, this.levelElem);
     container.appendChild(this.boardElem);
   }
 
-  // 加分事件
+  private createScoreColumn(label: string, value: string): HTMLElement {
+    // 创建包含得分的div元素
+    const scoreColumn = document.createElement('div');
+    scoreColumn.className = 'scoreboard-column';
+
+    // 创建得分标签的span元素
+    const scoreLabel = document.createElement('span');
+    scoreLabel.className = 'scoreboard-label';
+    scoreLabel.textContent = label + ': ';
+
+    // 创建得分值的span元素
+    const scoreValue = document.createElement('span');
+    // scoreValue.id = 'current-score';
+    scoreValue.className = 'scoreboard-value';
+    scoreValue.textContent = value;
+
+    // 将标签和值的span元素添加到div元素中
+    scoreColumn.appendChild(scoreLabel);
+    scoreColumn.appendChild(scoreValue);
+
+    return scoreColumn;
+  }
+
+
   updateScore() {
-    this.score += 1;
-    this.scoreElem.innerHTML = this.score + '';
-    // 判断当前分数是否需要升级
-    if (this.score >= this.maxScore) {
-      this.upgrade();
-    }
+
   }
 
   // 升级
   upgrade() {
-    if (this.level >= this.maxLevel) {
-      // TODO: 增加弹窗，恭喜通关～ /撒花
-      return;
-    }
-    // 修改元素内容
-    this.levelElem.innerHTML = ++this.level + '';
-    this.score = 0;
+
   }
 }
