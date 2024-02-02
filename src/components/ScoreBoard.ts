@@ -1,5 +1,7 @@
 // This file implements the class of Score Panel
-class ScorePanel {
+export class ScoreBoard {
+  boardElem: HTMLElement; // 面板DOM元素
+
   score = 0; // 当前分数值
   scoreElem: HTMLElement; // 展示分数的DOM元素
   maxScore: number; // 当前等级最高分数，达到后触发升级事件
@@ -9,14 +11,20 @@ class ScorePanel {
   maxLevel: number; // 最高等级
 
   constructor(maxLevel: number = 10, maxScore: number = 10) {
+    this.boardElem = document.createElement('div');
+    this.boardElem.classList.add('score-board')
     this.scoreElem = document.getElementById('score')!;
     this.maxScore = maxScore;
     this.levelElem = document.getElementById('level')!;
     this.maxLevel = maxLevel;
   }
 
+  public init(container: HTMLElement): void {
+    container.appendChild(this.boardElem);
+  }
+
   // 加分事件
-  addScore() {
+  updateScore() {
     this.score += 1;
     this.scoreElem.innerHTML = this.score + '';
     // 判断当前分数是否需要升级
@@ -36,5 +44,3 @@ class ScorePanel {
     this.score = 0;
   }
 }
-
-export default ScorePanel;

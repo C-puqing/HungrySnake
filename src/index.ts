@@ -1,8 +1,7 @@
-import ControlPanel from './classes/ControlPanel';
+import { App } from './App';
+import './styles/main.css'; // 假设我们有一个CSS文件来样式化游戏
 
-const index = new ControlPanel();
-
-window.onload = () => {
-  console.log('start the game');
-  const controlPanel = document.getElementById('controlPanel');
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new App();
+  app.start();
+});
