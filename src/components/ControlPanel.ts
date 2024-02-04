@@ -2,7 +2,6 @@
 
 export class ControlPanel {
   controlPanelElement: HTMLElement;
-  private restartCallback: (() => void) | undefined;
 
   constructor() {
     this.controlPanelElement = document.createElement('div');
@@ -12,6 +11,7 @@ export class ControlPanel {
   public init(container: HTMLElement): void {
     container.appendChild(this.controlPanelElement);
     this.createStartButton();
+    this.createResetButton();
   }
 
   // 创建开始游戏按钮
@@ -19,12 +19,20 @@ export class ControlPanel {
     const button = document.createElement('button');
     button.innerText = '开始游戏';
     button.addEventListener('click', () => {
-      const restartEvent = new CustomEvent('restart');
+      const restartEvent = new CustomEvent('start');
       this.controlPanelElement.dispatchEvent(restartEvent);
     });
     this.controlPanelElement.appendChild(button);
   }
-  public restart(callback: () => void) {
-    this.restartCallback = callback;
+
+  // 创建重置按钮
+  private createResetButton(): void {
+    const button = document.createElement('button');
+    button.innerText = '重置';
+    button.addEventListener('click', () => {
+      const resetEvent = new CustomEvent('reset');
+      this.controlPanelElement.dispatchEvent(resetEvent);
+    });
+    this.controlPanelElement.appendChild(button);
   }
 }

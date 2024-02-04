@@ -23,15 +23,21 @@ export class GameBoard {
       parseInt(window.getComputedStyle(this.boardElement).height));
     this.boardElement.appendChild(this.snake.element);
     // 监听键盘方向键事件，控制蛇的移动
-    document.addEventListener('keydown', (e) => {
-      this.snake.move(e);
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      // 如果e.key不是方向键，直接返回
+      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      // 调整蛇头的方向
+      this.snake.adjustHeadDirection(e.key.replace('Arrow', '').toLowerCase());
       if (this.checkEatFood()) {
         this.snake.grow();
         this.food.change();
       }
     });
 
-    document.addEventListener('gameOver', this.handleGameOver);
+    document.addEventListener('gameOver', () => {
+      alert('撞的头角峥嵘了都～～～');
+      this.reset();
+    });
   }
 
   private checkEatFood(): boolean {
@@ -39,12 +45,14 @@ export class GameBoard {
   }
 
   // 重启游戏时重置蛇和食物的位置
-  restart() {
-    this.snake.restart();
+  reset() {
+    // 重置蛇和食物的位置
+    this.snake.reset();
     this.food.change();
   }
 
-  private handleGameOver() {
-    alert('Game Over!');
+  start() {
+    this.snake.start();
+    this.food.change();
   }
 }

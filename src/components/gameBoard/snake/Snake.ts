@@ -1,25 +1,29 @@
 // This file implements the class of Snake
 import './styles.css';
 
+// 定义移动步长为常量
+const STEP = 20;
+
 class Snake {
   element: HTMLElement; // 蛇的容器元素
   head: HTMLImageElement; // 头部元素
   direction: string = 'right'; // 蛇当前的移动方向
   boundaryWidth: number = 0; // 面板宽度
   boundaryHeight: number = 0; // 面板高度
+  private intervalId: number = 0; // 定时器id，初始为0
 
   constructor() {
     this.head = this.createHead();
     this.element = document.createElement('div');
     this.element.className = 'snake';
+    this.element.id = 'snake';
     this.element.appendChild(this.head);
   }
 
   public init(boundaryWidth: number, boundaryHeight: number) {
     this.boundaryWidth = boundaryWidth;
     this.boundaryHeight = boundaryHeight;
-    this.head.style.left = (this.boundaryWidth / 2) + 'px';
-    this.head.style.top = (this.boundaryHeight / 2) + 'px';
+    this.reset();
   }
 
   get X() {
@@ -39,20 +43,20 @@ class Snake {
     this.head.style.top = value + 'px';
   }
 
-  // 移动，所有元素向指定方向移动10px
-  move(e: KeyboardEvent) {
-    switch (e.key) {
-      case 'ArrowUp':
-        this.Y -= 10;
+  // 移动，向面向移动10px
+  move() {
+    switch (this.direction) {
+      case 'up':
+        this.Y -= STEP;
         break;
-      case 'ArrowDown':
-        this.Y += 10;
+      case 'down':
+        this.Y += STEP;
         break;
-      case 'ArrowLeft':
-        this.X -= 10;
+      case 'left':
+        this.X -= STEP;
         break;
-      case 'ArrowRight':
-        this.X += 10;
+      case 'right':
+        this.X += STEP;
         break;
     }
 
@@ -62,8 +66,6 @@ class Snake {
       document.dispatchEvent(gameOverEvent);
       return;
     }
-    // 调整蛇头的方向
-    this.adjustHeadDirection(e.key.replace('Arrow', '').toLowerCase());
   }
 
   // 生长，每吃一个食物就要多一节身子
@@ -88,20 +90,30 @@ class Snake {
     return false;
   }
 
-  // 重启游戏时重置蛇的位置，恢复到画板中间
-  restart() {
+  // 重置，恢复初始状态
+  public reset() {
+    // 清除定时器
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
     this.X = this.boundaryWidth / 2;
     this.Y = this.boundaryHeight / 2;
     // 清除所有身子
     for (let i = 1; i < this.element.children.length; i++) {
       this.element.removeChild(this.element.children[i]);
     }
+    // 恢复面向右边
+    this.adjustHeadDirection('right');
+  }
+
+  // 开始游戏
+  public start() {
+    this.intervalId = window.setInterval(() => {
+      this.move();
+    }, 1000);
   }
 
   private createHead(): HTMLImageElement {
-    // const head = document.createElement('div');
-    // head.className = 'snake-head';
-
     const head = new Image();
     head.className = 'snake-head';
     head.src = require('../../../assets/dragon-head.png');
@@ -109,7 +121,7 @@ class Snake {
     return head;
   }
 
-  private adjustHeadDirection(value: string) {
+  public adjustHeadDirection(value: string) {
     this.direction = value;
     switch (this.direction) {
       case 'left':

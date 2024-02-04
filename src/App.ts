@@ -24,14 +24,15 @@ export class App {
     this.controlPanel.init(container);
 
     // 控制面板添加重启事件监听
-    this.controlPanel.controlPanelElement.addEventListener('restart', () => {
+    this.controlPanel.controlPanelElement.addEventListener('reset', () => {
       this.scoreBoard.restart();
-      this.gameBoard.restart();
+      this.gameBoard.reset();
     })
 
-    // 游戏板添加游戏结束事件监听
-    this.gameBoard.boardElement.addEventListener('gameOver', () => {
-      alert('游戏结束，请再接再厉~');
+    // 控制面板添加重启事件监听
+    this.controlPanel.controlPanelElement.addEventListener('start', () => {
+      this.scoreBoard.restart();
+      this.gameBoard.start();
     })
   }
 
