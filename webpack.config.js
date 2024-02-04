@@ -29,6 +29,11 @@ module.exports = {
           'css-loader', // 解析 CSS 文件
         ],
       },
+      // 图片文件处理
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {

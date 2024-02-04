@@ -11,13 +11,13 @@ export class ControlPanel {
 
   public init(container: HTMLElement): void {
     container.appendChild(this.controlPanelElement);
-    this.createRestartButton();
+    this.createStartButton();
   }
 
-  // 创建重启按钮
-  private createRestartButton(): void {
+  // 创建开始游戏按钮
+  private createStartButton(): void {
     const button = document.createElement('button');
-    button.innerText = '重新开始';
+    button.innerText = '开始游戏';
     button.addEventListener('click', () => {
       const restartEvent = new CustomEvent('restart');
       this.controlPanelElement.dispatchEvent(restartEvent);

@@ -1,5 +1,5 @@
 // 游戏的主要启动文件
-import { GameBoard } from './components/GameBoard';
+import { GameBoard } from './components/gameBoard/GameBoard';
 import { ScoreBoard } from './components/ScoreBoard';
 import { ControlPanel } from './components/ControlPanel';
 
@@ -26,9 +26,13 @@ export class App {
     // 控制面板添加重启事件监听
     this.controlPanel.controlPanelElement.addEventListener('restart', () => {
       this.scoreBoard.restart();
+      this.gameBoard.restart();
     })
 
-    // 可以在这里添加更多的游戏启动逻辑，例如开始游戏循环、设置定时器等
+    // 游戏板添加游戏结束事件监听
+    this.gameBoard.boardElement.addEventListener('gameOver', () => {
+      alert('游戏结束，请再接再厉~');
+    })
   }
 
   private createContainerElement(): HTMLElement {

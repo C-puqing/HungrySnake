@@ -1,5 +1,5 @@
 import { App } from './App';
-import './styles/main.css'; // 假设我们有一个CSS文件来样式化游戏
+import './styles/main.css';
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new App();
