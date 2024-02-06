@@ -24,15 +24,26 @@ export class App {
     this.controlPanel.init(container);
 
     // 控制面板添加重启事件监听
-    this.controlPanel.controlPanelElement.addEventListener('reset', () => {
-      this.scoreBoard.restart();
+    document.addEventListener('reset', () => {
+      this.scoreBoard.reset();
       this.gameBoard.reset();
     })
 
-    // 控制面板添加重启事件监听
-    this.controlPanel.controlPanelElement.addEventListener('start', () => {
-      this.scoreBoard.restart();
+    // 控制面板添加开始游戏事件监听
+    document.addEventListener('start', () => {
+      this.scoreBoard.reset();
       this.gameBoard.start();
+    })
+
+    // 添加得分事件监听，更新计分板
+    document.addEventListener('score', () => {
+      this.scoreBoard.updateScore()
+    })
+
+    document.addEventListener('ending', () => {
+      alert('🎉恭喜通关🎉')
+      this.scoreBoard.reset();
+      this.gameBoard.reset();
     })
   }
 

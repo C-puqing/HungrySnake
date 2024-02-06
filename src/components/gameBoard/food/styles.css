@@ -1,0 +1,9 @@
+/* 定义食物类，大小为40*40，外表为黑色圆球 */
+.food {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+  background-color: black;
+  border-radius: 50%;
+}

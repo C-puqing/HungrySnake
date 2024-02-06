@@ -12,7 +12,7 @@ export class ScoreBoard {
   levelElem: HTMLElement; // 展示等级的DOM元素
   maxLevel: number; // 最高等级
 
-  constructor(maxLevel: number = 10, targetScore: number = 10) {
+  constructor(maxLevel: number = 5, targetScore: number = 10) {
     // 构造外部面板
     this.boardElem = document.createElement('div');
     this.boardElem.classList.add('score-board')
@@ -54,13 +54,16 @@ export class ScoreBoard {
     return scoreColumn;
   }
 
-  restart() {
-    this.updateScore(10)
-    this.updateLevel(1)
+  reset() {
+    this.score = 0;
+    this.curScoreElem.querySelector('span:last-child')!.innerHTML = this.score.toString();
+
+    this.level = 1;
+    this.levelElem.querySelector('span:last-child')!.innerHTML = this.level.toString();
   }
 
-  updateScore(value: number) {
-    this.score = value;
+  updateScore() {
+    this.score += 1;
     if (this.score >= this.targetScore) {
       this.upgrade();
       return;
@@ -69,10 +72,10 @@ export class ScoreBoard {
     valueSpan.innerHTML = this.score.toString();
   }
 
-  updateLevel(value: number) {
-    this.level = value;
+  private updateLevel() {
+    this.level += 1;
     if (this.level >= this.maxLevel) {
-      alert('完结🎉');
+      document.dispatchEvent(new CustomEvent('ending'))
       return;
     }
     const valueSpan = this.levelElem.querySelector('span:last-child')!;
@@ -80,8 +83,8 @@ export class ScoreBoard {
   }
 
   // 升级
-  upgrade() {
-    this.updateScore(0);
-    this.updateLevel(this.level++);
+  private upgrade() {
+    this.score = 0;
+    this.updateLevel();
   }
 }

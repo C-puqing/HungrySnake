@@ -7,6 +7,8 @@ export class GameBoard {
   boardElement: HTMLElement;
   snake: Snake;
   food: Food;
+  // 检查是否吃到食物的定时器id
+  private checkEatFoodTimer: number = 0;
 
   constructor() {
     // 创建游戏面板
@@ -19,9 +21,11 @@ export class GameBoard {
 
   public init(container: HTMLElement): void {
     container.appendChild(this.boardElement);
-    this.snake.init(parseInt(window.getComputedStyle(this.boardElement).width),
-      parseInt(window.getComputedStyle(this.boardElement).height));
     this.boardElement.appendChild(this.snake.element);
+    const boardWidth = parseInt(window.getComputedStyle(this.boardElement).width);
+    const boardHeight = parseInt(window.getComputedStyle(this.boardElement).height);
+    this.snake.init(boardWidth, boardHeight);
+    this.food.init(boardWidth, boardHeight);
   }
 
   private handleKeyDown = (e: KeyboardEvent) => {
@@ -29,6 +33,7 @@ export class GameBoard {
     if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
     // 调整蛇头的方向
     this.snake.adjustHeadDirection(e.key.replace('Arrow', '').toLowerCase());
+    this.snake.move();
     if (this.checkEatFood()) {
       this.snake.grow();
       this.food.change();
@@ -41,6 +46,7 @@ export class GameBoard {
   }
 
   private checkEatFood(): boolean {
+    console.log(this.snake.X, this.snake.Y, this.food.X, this.food.Y);
     return this.snake.X === this.food.X && this.snake.Y === this.food.Y;
   }
 
@@ -48,16 +54,31 @@ export class GameBoard {
   reset() {
     // 清除键盘监听事件
     document.removeEventListener('keydown', this.handleKeyDown);
+    // 清除游戏结束事件
+    document.removeEventListener('gameOver', this.handleGameOver);
+    // 清除检查是否吃到食物的定时器
+    window.clearInterval(this.checkEatFoodTimer);
     // 重置蛇和食物的位置
     this.snake.reset();
-    this.food.change();
+    this.food.reset();
   }
 
   start() {
     // 监听键盘方向键事件，控制蛇的移动
     document.addEventListener('keydown', this.handleKeyDown);
+    // 监听游戏结束事件
     document.addEventListener('gameOver', this.handleGameOver);
+    // 启动定时器检查蛇是否吃到食物
+    this.checkEatFoodTimer = window.setInterval(() => {
+      if (this.checkEatFood()) {
+        // 抛出得分事件，让外部组件更新得分
+        document.dispatchEvent(new CustomEvent('score'));
+        this.snake.grow();
+        this.food.change();
+      }
+    }, 200);
     this.snake.start();
     this.food.change();
+    this.boardElement.appendChild(this.food.element);
   }
 }

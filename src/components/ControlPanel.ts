@@ -19,8 +19,7 @@ export class ControlPanel {
     const button = document.createElement('button');
     button.innerText = '开始游戏';
     button.addEventListener('click', () => {
-      const restartEvent = new CustomEvent('start');
-      this.controlPanelElement.dispatchEvent(restartEvent);
+      document.dispatchEvent(new CustomEvent('start'));
     });
     this.controlPanelElement.appendChild(button);
   }
@@ -30,8 +29,7 @@ export class ControlPanel {
     const button = document.createElement('button');
     button.innerText = '重置';
     button.addEventListener('click', () => {
-      const resetEvent = new CustomEvent('reset');
-      this.controlPanelElement.dispatchEvent(resetEvent);
+      document.dispatchEvent(new CustomEvent('reset'));
     });
     this.controlPanelElement.appendChild(button);
   }

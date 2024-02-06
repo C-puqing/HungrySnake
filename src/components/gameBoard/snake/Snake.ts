@@ -55,8 +55,7 @@ class Snake {
 
     // 检查是否撞墙
     if (this.checkCollision()) {
-      const gameOverEvent = new CustomEvent('gameOver');
-      document.dispatchEvent(gameOverEvent);
+      document.dispatchEvent(new CustomEvent('gameOver'));
       return;
     }
   }
