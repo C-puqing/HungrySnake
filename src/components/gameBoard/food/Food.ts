@@ -9,7 +9,6 @@ class Food {
   constructor() {
     // 创建HTMLElement对象，并设置id为food
     this.element = document.createElement('div');
-    this.element.className = 'food';
     this.element.id = 'food';
   }
 
