@@ -15,7 +15,7 @@ export class ScoreBoard {
   constructor(maxLevel: number = 5, targetScore: number = 10) {
     // 构造外部面板
     this.boardElem = document.createElement('div');
-    this.boardElem.classList.add('score-board')
+    this.boardElem.classList.add('score-board');
     // 构造当前分数DOM
     this.curScoreElem = this.createScoreColumn('当前分数', this.score.toString());
     // 构造目标分数DOM
@@ -65,26 +65,20 @@ export class ScoreBoard {
   updateScore() {
     this.score += 1;
     if (this.score >= this.targetScore) {
-      this.upgrade();
-      return;
+      this.score = 0;
+      this.updateLevel();
     }
     const valueSpan = this.curScoreElem.querySelector('span:last-child')!;
     valueSpan.innerHTML = this.score.toString();
   }
 
-  private updateLevel() {
+  // 升级
+  updateLevel() {
     this.level += 1;
-    if (this.level >= this.maxLevel) {
-      document.dispatchEvent(new CustomEvent('ending'))
-      return;
-    }
     const valueSpan = this.levelElem.querySelector('span:last-child')!;
     valueSpan.innerHTML = this.level.toString();
-  }
-
-  // 升级
-  private upgrade() {
-    this.score = 0;
-    this.updateLevel();
+    if (this.level >= this.maxLevel) {
+      document.dispatchEvent(new CustomEvent('ending'));
+    }
   }
 }

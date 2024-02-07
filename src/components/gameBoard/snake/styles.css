@@ -1,3 +1,9 @@
+#snake-container{
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+
 .snake-head {
   width: 40px;
   height: 40px;
@@ -10,9 +16,4 @@
   height: 40px;
   background: black;
   position: absolute;
-  z-index: 1;
-}
-
-.snake-body-move {
-  animation: snake-body-move 0.1s linear;
 }

@@ -1,5 +1,6 @@
 // This file implements the class of Food
-import "./styles.css";
+import './styles.css';
+import {STEP} from '../snake/Snake';
 
 class Food {
   element: HTMLElement;
@@ -12,28 +13,26 @@ class Food {
     this.element.id = 'food';
   }
 
-  get X() {
-    return this.element.offsetLeft + this.element.offsetWidth / 2;
+  get X(): number {
+    return parseInt(window.getComputedStyle(this.element).left, 10);
   }
 
   get Y() {
-    return this.element.offsetTop + this.element.offsetHeight / 2;
+    return parseInt(window.getComputedStyle(this.element).top, 10);
   }
 
-  // 由于设定蛇每次移动20px，所以食物的位置要被20整除
+  // 食物的位置一定要可以被步长整除，且必须全部在面板内
   change() {
-    const elemWidth = parseInt(window.getComputedStyle(this.element).width);
-    const elemHeight = parseInt(window.getComputedStyle(this.element).height);
-    const left = Math.floor(Math.random() * ((this.boundaryWidth - elemWidth) / 20)) * 20;
-    const top = Math.floor(Math.random() * ((this.boundaryHeight - elemHeight) / 20)) * 20;
-    this.element.style.left = left + 'px';
-    this.element.style.top = top + 'px';
+    const x = Math.round(Math.random() * (this.boundaryWidth / STEP - 1)) * STEP;
+    const y = Math.round(Math.random() * (this.boundaryHeight / STEP - 1)) * STEP;
+    this.element.style.left = x + 'px';
+    this.element.style.top = y + 'px';
   }
 
   public init(boundaryWidth: number, boundaryHeight: number) {
     this.boundaryWidth = boundaryWidth;
     this.boundaryHeight = boundaryHeight;
-    this.reset()
+    this.reset();
   }
 
   // 重置，清除面板上的食物
@@ -41,7 +40,7 @@ class Food {
     this.element.style.visibility = 'hidden';
   }
 
-  start () {
+  start() {
     this.element.style.visibility = 'visible';
     this.change();
   }
