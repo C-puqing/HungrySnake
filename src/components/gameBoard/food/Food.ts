@@ -39,7 +39,12 @@ class Food {
 
   // 重置，清除面板上的食物
   reset() {
-    this.element.remove();
+    this.element.style.visibility = 'hidden';
+  }
+
+  start () {
+    this.element.style.visibility = 'visible';
+    this.change();
   }
 }
 

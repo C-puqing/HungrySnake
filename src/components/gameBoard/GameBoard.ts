@@ -22,6 +22,7 @@ export class GameBoard {
   public init(container: HTMLElement): void {
     container.appendChild(this.boardElement);
     this.boardElement.appendChild(this.snake.element);
+    this.boardElement.appendChild(this.food.element);
     const boardWidth = parseInt(window.getComputedStyle(this.boardElement).width);
     const boardHeight = parseInt(window.getComputedStyle(this.boardElement).height);
     this.snake.init(boardWidth, boardHeight);
@@ -78,7 +79,7 @@ export class GameBoard {
       }
     }, 200);
     this.snake.start();
-    this.food.change();
+    this.food.start();
     this.boardElement.appendChild(this.food.element);
   }
 }
